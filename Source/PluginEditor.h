@@ -14,7 +14,8 @@
 //==============================================================================
 /**
 */
-class DelayLineAudioProcessorEditor  : public juce::AudioProcessorEditor
+class DelayLineAudioProcessorEditor  : public juce::AudioProcessorEditor, 
+                                       public juce::Slider::Listener
 {
 public:
     DelayLineAudioProcessorEditor (DelayLineAudioProcessor&);
@@ -24,13 +25,12 @@ public:
     void paint (juce::Graphics&) override;
     void resized() override;
 
-    void delayTypeChanged();
+    void sliderValueChanged(juce::Slider* slider) override;
 
 private:
     juce::Slider feedbackSlider;
     juce::Label feedbackLabel;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> feedbackAttachment;
-
 
     juce::Slider lengthSlider;
     juce::Label lengthLabel;

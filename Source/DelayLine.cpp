@@ -36,10 +36,7 @@ void DelayLine::setMemory(int buf_size)
 
 void DelayLine::clear()
 {
-	for (auto i = 0; i < BUF_SIZE; i++)
-	{
-		delayBuffer[i] = 0.f;
-	}
+	std::fill(delayBuffer, delayBuffer + BUF_SIZE, 0);
 }
 
 void DelayLine::write(float sample)

@@ -8,6 +8,7 @@
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
+#include "PluginProcessor.cpp"
 
 //==============================================================================
 DelayLineAudioProcessorEditor::DelayLineAudioProcessorEditor 
@@ -18,6 +19,7 @@ DelayLineAudioProcessorEditor::DelayLineAudioProcessorEditor
     feedbackSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
     feedbackSlider.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::NoTextBox, false, 0, 0);
     feedbackLabel.setText("feedback", juce::NotificationType::dontSendNotification);
+    feedbackSlider.setRotaryParameters(4.712385f, 7.853975f, true);
     feedbackAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts, "feedback", feedbackSlider);
 
     addAndMakeVisible(feedbackSlider);
@@ -25,6 +27,8 @@ DelayLineAudioProcessorEditor::DelayLineAudioProcessorEditor
 
     lengthSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
     lengthSlider.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::NoTextBox, false, 0, 0);
+    lengthSlider.setRange(0.0f, 1.0f, 0.25f);
+    lengthSlider.setRotaryParameters(4.712385f, 7.853975f, true);
     lengthLabel.setText("length", juce::NotificationType::dontSendNotification);
     lengthAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts, "length", lengthSlider);
 
@@ -33,7 +37,6 @@ DelayLineAudioProcessorEditor::DelayLineAudioProcessorEditor
 
     delayType.addItem("Earth", 1);
     delayType.addItem("Mars", 2);
-    delayType.onChange = [this] {delayTypeChanged(); };
     delayType.setSelectedId(0, juce::NotificationType::dontSendNotification);
     delayType.setText(delayType.getItemText(delayType.getSelectedId()));
 
@@ -68,6 +71,10 @@ void DelayLineAudioProcessorEditor::resized()
     delayType.setBounds({ 200, 425, 100, 25 });
 }
 
-void DelayLineAudioProcessorEditor::delayTypeChanged()
+void DelayLineAudioProcessorEditor::sliderValueChanged(juce::Slider* slider)
 {
+    if (slider == &lengthSlider)
+    {
+        dl.clear();
+    }
 }
